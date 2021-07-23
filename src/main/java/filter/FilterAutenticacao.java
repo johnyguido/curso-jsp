@@ -1,6 +1,8 @@
 package filter;
 
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.SQLException;
 
 import jakarta.servlet.Filter;
 import jakarta.servlet.FilterChain;
@@ -13,8 +15,13 @@ import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpSession;
 
+
+import connection.SingleConnectionBanco;
+
 @WebFilter(urlPatterns = { "/principal/*" }) /* INTERCEPTA TODAS AS REQUISIÇÕES */
 public class FilterAutenticacao implements Filter {
+
+	private static Connection connection;
 
 	public FilterAutenticacao() {
 		// TODO Auto-generated constructor stub
@@ -22,37 +29,58 @@ public class FilterAutenticacao implements Filter {
 
 	/* ENCERRA OS PROCESSOS QUANDO O SERVIDOR É PARADO */
 	public void destroy() {
-		// TODO Auto-generated method stub
+		try {
+			connection.close();
+		} catch (SQLException e) {
+
+			e.printStackTrace();
+		}
 	}
 
 	/* INTERCEPTA TODAS AS REQUISIÇÕES */
 	public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
 			throws IOException, ServletException {
 
-		HttpServletRequest req = (HttpServletRequest) request;
-		HttpSession session = req.getSession();
+		try {
 
-		String usuarioLogado = (String) session.getAttribute("usuario");
+			HttpServletRequest req = (HttpServletRequest) request;
+			HttpSession session = req.getSession();
 
-		String urlParaAutenticar = req.getServletPath(); /* URL QUE ESTÁ SENDO ACESSADA */
+			String usuarioLogado = (String) session.getAttribute("usuario");
 
-		/* VALIDAR SE ESTA LOGADO SENAO REDIRECIONA PARA A TELA DE LOGIN */
+			String urlParaAutenticar = req.getServletPath(); /* URL QUE ESTÁ SENDO ACESSADA */
 
-		if (usuarioLogado == null && !urlParaAutenticar.equalsIgnoreCase("principal/ServletLogin")) {
+			/* VALIDAR SE ESTA LOGADO SENAO REDIRECIONA PARA A TELA DE LOGIN */
 
-			RequestDispatcher redireciona = request.getRequestDispatcher("/index.jsp?url=" + urlParaAutenticar);
-			request.setAttribute("msg", "Por favor realize o login");
-			redireciona.forward(request, response);
-			return;
-		} else {
+			if (usuarioLogado == null && !urlParaAutenticar.equalsIgnoreCase("principal/ServletLogin")) {
 
-			chain.doFilter(request, response);
+				RequestDispatcher redireciona = request.getRequestDispatcher("/index.jsp?url=" + urlParaAutenticar);
+				request.setAttribute("msg", "Por favor realize o login");
+				redireciona.forward(request, response);
+				return;
+			} else {
+
+				chain.doFilter(request, response);
+			}
+
+			connection.commit();
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			try {
+				connection.rollback();
+			} catch (SQLException e1) {
+
+				e1.printStackTrace();
+			}
 		}
+
 	}
 
 	/* INICIA OS PROCESSOS QUANDO O SERVIDOR É INICIADO */
 	public void init(FilterConfig fConfig) throws ServletException {
-		// TODO Auto-generated method stub
+	/* ANALISAR O ERRO DE TLD AO IMPLEMENTAR A LINHA 83*/
+		//	connection = SingleConnectionBanco.getConnection();
 	}
 
 }

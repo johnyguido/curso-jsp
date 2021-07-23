@@ -62,14 +62,14 @@ public class ServletLogin extends HttpServlet {
 
 				} else {
 					RequestDispatcher redirecionar = request.getRequestDispatcher("/index.jsp");
-					request.setAttribute("msg", "Informe o login e senha corretamente");
+					request.setAttribute("msg", "Informe o login e senha corretamente!");
 					redirecionar.forward(request, response);
 
 				}
 
 			} else {
 				RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp");
-				request.setAttribute("msg", "Informe o login e senha corretamente");
+				request.setAttribute("msg", "Informe o login e senha corretamente!");
 				redirecionar.forward(request, response);
 
 			}

@@ -67,6 +67,11 @@ public class FilterAutenticacao implements Filter {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			
+			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
+			request.setAttribute("msg", e.getMessage());
+			redirecionar.forward(request, response);
+			
 			try {
 				connection.rollback();
 			} catch (SQLException e1) {
@@ -80,7 +85,7 @@ public class FilterAutenticacao implements Filter {
 	/* INICIA OS PROCESSOS QUANDO O SERVIDOR É INICIADO */
 	public void init(FilterConfig fConfig) throws ServletException {
 	/* ANALISAR O ERRO DE TLD AO IMPLEMENTAR A LINHA 83*/
-		//	connection = SingleConnectionBanco.getConnection();
+			connection = SingleConnectionBanco.getConnection();
 	}
 
 }

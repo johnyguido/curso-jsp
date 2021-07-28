@@ -27,9 +27,9 @@
 
 					<div class="pcoded-content">
 						<!-- Page-header start -->
-						
+
 						<jsp:include page="page-header.jsp"></jsp:include>
-						
+
 						<!-- Page-header end -->
 						<div class="pcoded-inner-content">
 							<!-- Main-body start -->
@@ -37,11 +37,67 @@
 								<div class="page-wrapper">
 									<!-- Page-body start -->
 									<div class="page-body">
+
 										<div class="row">
-										
-										<h1>CADASTRO DE USUARIO</h1>
-										
+											<div class="col-sm-12">
+												<!-- Basic Form Inputs card start -->
+												<div class="card">
+
+													<div class="card-block">
+														<h4 class="sub-title">Cad. usuário</h4>
+
+
+														<div class="card-block">
+
+															<form class="form-material">
+																<div class="form-group form-default">
+																	<input type="text" name="footer-email"
+																		class="form-control" required=""> <span
+																		class="form-bar"></span> <label class="float-label">ID:</label>
+																</div>
+
+																<div class="form-group form-default">
+																	<input type="text" name="footer-email"
+																		class="form-control" required=""> <span
+																		class="form-bar"></span> <label class="float-label">NOME:</label>
+																</div>
+
+																<div class="form-group form-default">
+																	<input type="text" name="footer-email"
+																		class="form-control" required=""> <span
+																		class="form-bar"></span> <label class="float-label">E-mail:</label>
+																</div>
+																<div class="form-group form-default">
+																	<input type="password" name="footer-email"
+																		class="form-control" required=""> <span
+																		class="form-bar"></span> <label class="float-label">Password</label>
+																</div>
+
+
+															</form>
+
+															<button class="btn btn-primary waves-effect waves-light">Primary
+																Button</button>
+															<button class="btn btn-success waves-effect waves-light">Success
+																Button</button>
+															<button class="btn btn-info waves-effect waves-light">Info
+																Button</button>
+															<button class="btn btn-warning waves-effect waves-light">Warning
+																Button</button>
+															<button class="btn btn-danger waves-effect waves-light">Danger
+																Button</button>
+															<button class="btn btn-inverse waves-effect waves-light">Inverse
+																Button</button>
+															<button
+																class="btn btn-disabled disabled waves-effect waves-light">Disabled
+																Button</button>
+
+														</div>
+													</div>
+												</div>
+											</div>
 										</div>
+
 									</div>
 									<!-- Page-body end -->
 								</div>

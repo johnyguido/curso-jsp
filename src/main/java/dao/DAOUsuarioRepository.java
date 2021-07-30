@@ -3,7 +3,6 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import connection.SingleConnectionBanco;
 import model.ModelLogin;
@@ -20,18 +19,38 @@ public class DAOUsuarioRepository {
 
 	public ModelLogin gravarUsuario(ModelLogin modelLogin) throws Exception {
 
-		String sql = "insert into model_login(login, senha, nome, email) VALUES (?, ?, ?, ?)";
+		if (modelLogin.isNovo()) {
 
-		PreparedStatement prepareSql = connection.prepareStatement(sql);
+			String sql = "insert into model_login(login, senha, nome, email) VALUES (?, ?, ?, ?)";
 
-		prepareSql.setString(1, modelLogin.getLogin());
-		prepareSql.setString(2, modelLogin.getSenha());
-		prepareSql.setString(3, modelLogin.getNome());
-		prepareSql.setString(4, modelLogin.getEmail());
+			PreparedStatement prepareSql = connection.prepareStatement(sql);
 
-		prepareSql.execute();
-		connection.commit();
+			prepareSql.setString(1, modelLogin.getLogin());
+			prepareSql.setString(2, modelLogin.getSenha());
+			prepareSql.setString(3, modelLogin.getNome());
+			prepareSql.setString(4, modelLogin.getEmail());
 
+			prepareSql.execute();
+			connection.commit();
+
+			return this.consultarUsuario(modelLogin.getLogin());
+
+		} else {
+
+			String sql = "UPDATE model_login SET login=?, senha=?, nome=?, email=? where id = " + modelLogin.getId()
+					+ ";";
+
+			PreparedStatement prepareSql = connection.prepareStatement(sql);
+
+			prepareSql.setString(1, modelLogin.getLogin());
+			prepareSql.setString(2, modelLogin.getSenha());
+			prepareSql.setString(3, modelLogin.getNome());
+			prepareSql.setString(4, modelLogin.getEmail());
+
+			prepareSql.execute();
+			connection.commit();
+		}
+		
 		return this.consultarUsuario(modelLogin.getLogin());
 
 	}
@@ -63,13 +82,13 @@ public class DAOUsuarioRepository {
 	public boolean validarLogin(String login) throws Exception {
 
 		String sql = "SELECT count(1) > 0 as existe from model_login where upper(login) = upper('" + login + "')";
-		
+
 		PreparedStatement statemant = connection.prepareStatement(sql);
 
 		ResultSet resultado = statemant.executeQuery();
-		
+
 		resultado.next();
-		
+
 		return resultado.getBoolean("existe");
 
 	}

@@ -3,6 +3,7 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 
 import connection.SingleConnectionBanco;
 import model.ModelLogin;
@@ -56,6 +57,20 @@ public class DAOUsuarioRepository {
 		}
 
 		return modelLogin;
+
+	}
+
+	public boolean validarLogin(String login) throws Exception {
+
+		String sql = "SELECT count(1) > 0 as existe from model_login where upper(login) = upper('" + login + "')";
+		
+		PreparedStatement statemant = connection.prepareStatement(sql);
+
+		ResultSet resultado = statemant.executeQuery();
+		
+		resultado.next();
+		
+		return resultado.getBoolean("existe");
 
 	}
 

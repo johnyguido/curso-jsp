@@ -44,6 +44,7 @@
 												<div class="card">
 
 													<div class="card-block">
+													<span>${ msg }</span>
 														<h4 class="sub-title">Cad. usuário</h4>
 
 

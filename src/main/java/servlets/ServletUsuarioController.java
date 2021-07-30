@@ -23,15 +23,34 @@ public class ServletUsuarioController extends HttpServlet {
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
+		try {
+			String acao = request.getParameter("acao");
+
+			if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletar")) {
+				String id = request.getParameter("id");
+				daoUsuarioRepository.deletarUser(id);
+				request.setAttribute("msg", "Excluido com sucesso");
+
+			}
+			
+			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+
+		} catch (Exception e) {
+			e.printStackTrace();
+			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
+			request.setAttribute("msg", e.getMessage());
+			redirecionar.forward(request, response);
+		}
+
 	}
 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
 		try {
-			
+
 			String msg = "Operacao realizada com sucesso!";
-			
+
 			String id = request.getParameter("id");
 			String nome = request.getParameter("nome");
 			String email = request.getParameter("email");
@@ -45,20 +64,18 @@ public class ServletUsuarioController extends HttpServlet {
 			modelLogin.setEmail(email);
 			modelLogin.setLogin(login);
 			modelLogin.setSenha(senha);
-			
-			if(daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
+
+			if (daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
 				msg = "Já existe usuário com o mesmo login, informe outro login";
-			}else {
-				
+			} else {
+
 				if (modelLogin.isNovo()) {
 					msg = "Gravado com sucesso!";
-				}else {
+				} else {
 					msg = "Atualizado com sucesso";
 				}
 				modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin);
 			}
-			
-			
 
 			modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin);
 

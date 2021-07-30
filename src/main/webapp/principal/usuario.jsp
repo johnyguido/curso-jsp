@@ -49,48 +49,50 @@
 
 														<div class="card-block">
 
-															<form class="form-material">
+															<form class="form-material" action="<%= request.getContextPath() %>/ServletUsuarioController" method=post>
 																<div class="form-group form-default">
-																	<input type="text" name="footer-email"
-																		class="form-control" required=""> <span
+																	<input type="text" name="id" Id="id"
+																		class="form-control" readonly="readonly" value="${ modelLogin.id }"> <span
 																		class="form-bar"></span> <label class="float-label">ID:</label>
 																</div>
 
 																<div class="form-group form-default">
-																	<input type="text" name="footer-email"
-																		class="form-control" required=""> <span
+																	<input type="text" name="nome" Id="nome"
+																		class="form-control" required="required" value="${ modelLogin.nome }"> <span
 																		class="form-bar"></span> <label class="float-label">NOME:</label>
 																</div>
 
 																<div class="form-group form-default">
-																	<input type="text" name="footer-email"
-																		class="form-control" required=""> <span
-																		class="form-bar"></span> <label class="float-label">E-mail:</label>
+																	<input type="email" name="email" Id="email"
+																		class="form-control" required="required"
+																		autocomplete="off" value="${ modelLogin.email }"> <span class="form-bar"></span>
+																	<label class="float-label">E-mail:</label>
 																</div>
+																
 																<div class="form-group form-default">
-																	<input type="password" name="footer-email"
-																		class="form-control" required=""> <span
-																		class="form-bar"></span> <label class="float-label">Password</label>
+																	<input type="login" name="login" Id="login"
+																		class="form-control" required="required"
+																		autocomplete="off" value="${ modelLogin.login }"> <span class="form-bar"></span>
+																	<label class="float-label">Login:</label>
+																</div>
+																
+																<div class="form-group form-default">
+																	<input type="password" name="senha" id="senha"
+																		class="form-control" required="required"
+																		autocomplete="off" value="${ modelLogin.senha }"> <span class="form-bar"></span>
+																	<label class="float-label">Password:</label>
 																</div>
 
+																<button class="btn btn-primary waves-effect waves-light">Novo
+																	Button</button>
+																<button class="btn btn-success waves-effect waves-light">Salvar
+																</button>
+																<button class="btn btn-info waves-effect waves-light">Excluir</button>
 
 															</form>
 
-															<button class="btn btn-primary waves-effect waves-light">Primary
-																Button</button>
-															<button class="btn btn-success waves-effect waves-light">Success
-																Button</button>
-															<button class="btn btn-info waves-effect waves-light">Info
-																Button</button>
-															<button class="btn btn-warning waves-effect waves-light">Warning
-																Button</button>
-															<button class="btn btn-danger waves-effect waves-light">Danger
-																Button</button>
-															<button class="btn btn-inverse waves-effect waves-light">Inverse
-																Button</button>
-															<button
-																class="btn btn-disabled disabled waves-effect waves-light">Disabled
-																Button</button>
+
+
 
 														</div>
 													</div>

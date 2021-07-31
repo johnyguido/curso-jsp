@@ -44,7 +44,7 @@
 												<div class="card">
 
 													<div class="card-block">
-														<span>${ msg }</span>
+
 														<h4 class="sub-title">Cad. usuário</h4>
 
 
@@ -102,7 +102,7 @@
 																</button>
 																<button type="button"
 																	class="btn btn-info waves-effect waves-light"
-																	onclick="criarDelete();">Excluir</button>
+																	onclick="criarDeleteComAjax();">Excluir</button>
 
 															</form>
 
@@ -115,6 +115,8 @@
 											</div>
 										</div>
 
+										<span id="msg">${msg}</span>
+										
 									</div>
 									<!-- Page-body end -->
 								</div>
@@ -175,16 +177,33 @@
 </body>
 
 <script type="text/javascript">
+	function criarDeleteComAjax() {
+		if (confirm('Deseja realmente excluir os dados?')) {
+			var urlAction = document.getElementById('formUser').action;
+			var idUser = document.getElementById('id').value;
+			$.ajax({
+				method : "get",
+				url : urlAction,
+				data : "id=" + idUser + '&acao=deletarajax',
+				success : function(response) {
+					limparForm();
+					document.getElementById('msg').textContent = response;
+				}
+			}).fail(function(xhr, status, errorThrown) {
+				alert('Erro ao deletar usuário por id: ' + xhr.responseText);
+			});
+		}
+	}
+
 	function criarDelete() {
-		
-		if(confirm('Deseja realmente excluir os dados?')){
-			
+
+		if (confirm('Deseja realmente excluir os dados?')) {
+
 			document.getElementById("formUser").method = 'get';
 			document.getElementById("acao").value = 'deletar';
 			document.getElementById("formUser").submit();
-			
-		}
 
+		}
 
 	}
 

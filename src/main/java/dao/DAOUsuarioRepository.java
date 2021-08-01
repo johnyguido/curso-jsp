@@ -61,7 +61,7 @@ public class DAOUsuarioRepository {
 
 		List<ModelLogin> retorno = new ArrayList<>();
 
-		String sql = "select * from model_login";
+		String sql = "select * from model_login ORDER BY id DESC";
 
 		PreparedStatement statement = connection.prepareStatement(sql);
 
@@ -87,11 +87,11 @@ public class DAOUsuarioRepository {
 
 		List<ModelLogin> retorno = new ArrayList<>();
 
-		String sql = "select * from model_login where upper(nome) like upper(?)";
+		String sql = "select * from model_login where upper(nome) like upper(?) ORDER BY id DESC";
 
 		PreparedStatement statement = connection.prepareStatement(sql);
-
-		statement.setString(1, "%" + nome + "%");
+		
+		statement.setString(1, "%" + nome + "%"); 
 
 		ResultSet resultado = statement.executeQuery();
 
@@ -115,7 +115,7 @@ public class DAOUsuarioRepository {
 
 		ModelLogin modelLogin = new ModelLogin();
 
-		String sql = "SELECT * from model_login where upper(login) = upper('" + login + "')";
+		String sql = "SELECT * from model_login where upper(login) = upper('" + login + "ORDER BY id DESC')";
 
 		PreparedStatement statemant = connection.prepareStatement(sql);
 

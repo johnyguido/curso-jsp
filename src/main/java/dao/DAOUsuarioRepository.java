@@ -52,38 +52,36 @@ public class DAOUsuarioRepository {
 			prepareSql.execute();
 			connection.commit();
 		}
-		
+
 		return this.consultarUsuario(modelLogin.getLogin());
 
 	}
-	
-	public List<ModelLogin> consultarUsuarioList(String nome) throws Exception{
-		
+
+	public List<ModelLogin> consultarUsuarioList(String nome) throws Exception {
+
 		List<ModelLogin> retorno = new ArrayList<>();
-		
+
 		String sql = "select * from model_login where upper(nome) like upper(?)";
-		
+
 		PreparedStatement statement = connection.prepareStatement(sql);
-		
-		statement.setString(1,"%"+nome+"%");
-		
+
+		statement.setString(1, "%" + nome + "%");
+
 		ResultSet resultado = statement.executeQuery();
-		
-		while(resultado.next()) {
-			
+
+		while (resultado.next()) {
+
 			ModelLogin modelLogin = new ModelLogin();
-			
+
 			modelLogin.setEmail(resultado.getString("email"));
 			modelLogin.setLogin(resultado.getString("login"));
-		//	modelLogin.setSenha(resultado.getString("senha"));
+			// modelLogin.setSenha(resultado.getString("senha"));
 			modelLogin.setNome(resultado.getString("nome"));
 			modelLogin.setId(resultado.getLong("id"));
-			
+
 			retorno.add(modelLogin);
 		}
-		
-		
-		
+
 		return retorno;
 	}
 
@@ -96,6 +94,32 @@ public class DAOUsuarioRepository {
 		PreparedStatement statemant = connection.prepareStatement(sql);
 
 		ResultSet resultado = statemant.executeQuery();
+
+		while (resultado.next()) {
+
+			modelLogin.setId(resultado.getLong("id"));
+			modelLogin.setEmail(resultado.getString("email"));
+			modelLogin.setLogin(resultado.getString("login"));
+			modelLogin.setNome(resultado.getString("nome"));
+			modelLogin.setSenha(resultado.getString("senha"));
+
+		}
+
+		return modelLogin;
+
+	}
+
+	public ModelLogin consultarUsuarioPorId(String id) throws Exception {
+
+		ModelLogin modelLogin = new ModelLogin();
+
+		String sql = "select * from model_login where id = ?";
+
+		PreparedStatement prepareSql = connection.prepareStatement(sql);
+
+		prepareSql.setLong(1, Long.parseLong(id));
+
+		ResultSet resultado = prepareSql.executeQuery();
 
 		while (resultado.next()) {
 
@@ -124,19 +148,19 @@ public class DAOUsuarioRepository {
 		return resultado.getBoolean("existe");
 
 	}
-	
+
 	public void deletarUser(String id) throws Exception {
-					
+
 		String sql = "DELETE FROM model_login WHERE id = ?;";
-		
+
 		PreparedStatement prepareSql = connection.prepareStatement(sql);
-		
+
 		prepareSql.setLong(1, Long.parseLong(id));
-		
+
 		prepareSql.executeUpdate();
-				
+
 		connection.commit();
-		
+
 	}
 
 }

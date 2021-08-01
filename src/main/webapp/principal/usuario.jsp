@@ -1,5 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
+
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
 <!DOCTYPE html>
 <html>
 
@@ -121,6 +124,32 @@
 
 										<span id="msg">${msg}</span>
 
+										<div style="height: 300px; overflow: scroll;">
+											<table class="table" id="tabelaresultadosview">
+												<thead>
+													<tr>
+														<th scope="col">ID</th>
+														<th scope="col">Nome</th>
+														<th scope="col">Ver</th>
+													</tr>
+												</thead>
+												<tbody>
+
+													<c:forEach items='${modelLogins}' var='ml'>
+														<tr>
+															<td><c:out value="${ml.id}"></c:out></td>
+															<td><c:out value="${ml.nome}"></c:out></td>
+															<td><a class="btn btn-success"
+																href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}">Ver</a></td>
+														</tr>
+													</c:forEach>
+
+
+												</tbody>
+											</table>
+
+										</div>
+
 									</div>
 									<!-- Page-body end -->
 								</div>
@@ -204,8 +233,8 @@
 							onclick="buscarUsuario();">Buscar</button>
 					</div>
 				</div>
-				
-				<div  style="height: 300px; overflow: scroll;">
+
+				<div style="height: 300px; overflow: scroll;">
 					<table class="table" id="tabelaresultados">
 						<thead>
 							<tr>
@@ -218,12 +247,12 @@
 
 						</tbody>
 					</table>
-					
+
 				</div>
 			</div>
 			<span id="totalresultados"></span>
 			<div class="modal-footer">
-			
+
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
 			</div>
 		</div>
@@ -233,18 +262,13 @@
 
 
 <script type="text/javascript">
-	
-	function verEditar(id){
-		var urlAction = document.getElementById('formUser').action;
-		
-		window.location.href = urlAction + '?acao=buscarEditar&id='+id;
-		
-		console.log(window.location.href);
-		
-		
-		
-	}
+	function verEditar(id) {
 
+		var urlAction = document.getElementById('formUser').action;
+
+		window.location.href = urlAction + '?acao=buscarEditar&id=' + id;
+
+	}
 
 	function buscarUsuario() {
 
@@ -254,32 +278,42 @@
 
 			var urlAction = document.getElementById('formUser').action;
 
-			$.ajax(
-					{
-						method : "get",
-						url : urlAction,
-						data : "nomeBusca=" + nomeBusca
-								+ '&acao=buscarUserAjax',
-						success : function(response) {
+			$
+					.ajax(
+							{
+								method : "get",
+								url : urlAction,
+								data : "nomeBusca=" + nomeBusca
+										+ '&acao=buscarUserAjax',
+								success : function(response) {
 
-							var json = JSON.parse(response);
+									var json = JSON.parse(response);
 
-							$('#tabelaresultados > tbody > tr').remove();
+									$('#tabelaresultados > tbody > tr')
+											.remove();
 
-							for (var p = 0; p < json.length; p++) {
-								$('#tabelaresultados > tbody').append(
-										'<tr> <td>' + json[p].id
-												+ '</td> <td> ' + json[p].nome
-												+ '</td> <td><button type="button" class="btn btn-info" onclick="verEditar('+json[p].id+')">Ver</button></td> </tr>');
-							}
-							
-							document.getElementById('totalresultados').textContent = 'Total de registros: ' + json.length;
+									for (var p = 0; p < json.length; p++) {
+										$('#tabelaresultados > tbody')
+												.append(
+														'<tr> <td>'
+																+ json[p].id
+																+ '</td> <td> '
+																+ json[p].nome
+																+ '</td> <td><button type="button" class="btn btn-info" onclick="verEditar('
+																+ json[p].id
+																+ ')">Ver</button></td> </tr>');
+									}
 
-						}
+									document.getElementById('totalresultados').textContent = 'Total de registros: '
+											+ json.length;
 
-					}).fail(function(xhr, status, errorThrown) {
-				alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
-			});
+								}
+
+							}).fail(
+							function(xhr, status, errorThrown) {
+								alert('Erro ao buscar usuário por nome: '
+										+ xhr.responseText);
+							});
 
 		}
 
@@ -289,17 +323,21 @@
 		if (confirm('Deseja realmente excluir os dados?')) {
 			var urlAction = document.getElementById('formUser').action;
 			var idUser = document.getElementById('id').value;
-			$.ajax({
-				method : "get",
-				url : urlAction,
-				data : "id=" + idUser + '&acao=deletarajax',
-				success : function(response) {
-					limparForm();
-					document.getElementById('msg').textContent = response;
-				}
-			}).fail(function(xhr, status, errorThrown) {
-				alert('Erro ao deletar usuário por id: ' + xhr.responseText);
-			});
+			$
+					.ajax(
+							{
+								method : "get",
+								url : urlAction,
+								data : "id=" + idUser + '&acao=deletarajax',
+								success : function(response) {
+									limparForm();
+									document.getElementById('msg').textContent = 'Registro excluído!';
+								}
+							}).fail(
+							function(xhr, status, errorThrown) {
+								alert('Erro ao deletar usuário por id: '
+										+ xhr.responseText);
+							});
 		}
 	}
 

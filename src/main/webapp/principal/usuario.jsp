@@ -204,22 +204,26 @@
 							onclick="buscarUsuario();">Buscar</button>
 					</div>
 				</div>
+				
+				<div  style="height: 300px; overflow: scroll;">
+					<table class="table" id="tabelaresultados">
+						<thead>
+							<tr>
+								<th scope="col">ID</th>
+								<th scope="col">Nome</th>
+								<th scope="col">Ver</th>
+							</tr>
+						</thead>
+						<tbody>
 
-				<table class="table">
-					<thead>
-						<tr>
-							<th scope="col">ID</th>
-							<th scope="col">Nome</th>
-							<th scope="col">Ver</th>
-						</tr>
-					</thead>
-					<tbody>
-
-					</tbody>
-				</table>
-
+						</tbody>
+					</table>
+					
+				</div>
 			</div>
+			<span id="totalresultados"></span>
 			<div class="modal-footer">
+			
 				<button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
 			</div>
 		</div>
@@ -236,17 +240,31 @@
 		if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') {
 
 			var urlAction = document.getElementById('formUser').action;
-			
-			$.ajax({
-				method : "get",
-				url : urlAction,
-				data : "nomeBusca=" + nomeBusca + '&acao=buscarUserAjax',
-				success : function(response) {
-					
-					alert(response);
-										
-				}
-			}).fail(function(xhr, status, errorThrown) {
+
+			$.ajax(
+					{
+						method : "get",
+						url : urlAction,
+						data : "nomeBusca=" + nomeBusca
+								+ '&acao=buscarUserAjax',
+						success : function(response) {
+
+							var json = JSON.parse(response);
+
+							$('#tabelaresultados > tbody > tr').remove();
+
+							for (var p = 0; p < json.length; p++) {
+								$('#tabelaresultados > tbody').append(
+										'<tr> <td>' + json[p].id
+												+ '</td> <td> ' + json[p].nome
+												+ '</td> <td><button type="button" class="btn btn-info">Ver</button></td> </tr>');
+							}
+							
+							document.getElementById('totalresultados').textContent = 'Total de registros: ' + json.length;
+
+						}
+
+					}).fail(function(xhr, status, errorThrown) {
 				alert('Erro ao buscar usuário por nome: ' + xhr.responseText);
 			});
 
